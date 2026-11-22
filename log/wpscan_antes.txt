@@ -1,0 +1,73 @@
+_______________________________________________________________
+         __          _______   _____
+         \ \        / /  __ \ / ____|
+          \ \  /\  / /| |__) | (___   ___  __ _ _ __ ®
+           \ \/  \/ / |  ___/ \___ \ / __|/ _` | '_ \
+            \  /\  /  | |     ____) | (__| (_| | | | |
+             \/  \/   |_|    |_____/ \___|\__,_|_| |_|
+
+         WordPress Security Scanner by the WPScan Team
+                         Version 3.8.28
+       Sponsored by Automattic - https://automattic.com/
+       @_WPScan_, @ethicalhack3r, @erwan_lr, @firefart
+_______________________________________________________________
+
+[32m[+][0m URL: https://localhost/ [::1]
+[32m[+][0m Effective URL: https://localhost:8443/
+[32m[+][0m Started: Sun Nov 22 16:45:57 2026
+
+Interesting Finding(s):
+
+[32m[+][0m XML-RPC seems to be enabled: https://localhost/xmlrpc.php
+ | Found By: Direct Access (Aggressive Detection)
+ | Confidence: 100%
+ | References:
+ |  - http://codex.wordpress.org/XML-RPC_Pingback_API
+ |  - https://www.rapid7.com/db/modules/auxiliary/scanner/http/wordpress_ghost_scanner/
+ |  - https://www.rapid7.com/db/modules/auxiliary/dos/http/wordpress_xmlrpc_dos/
+ |  - https://www.rapid7.com/db/modules/auxiliary/scanner/http/wordpress_xmlrpc_login/
+ |  - https://www.rapid7.com/db/modules/auxiliary/scanner/http/wordpress_pingback_access/
+
+[32m[+][0m WordPress readme found: https://localhost/readme.html
+ | Found By: Direct Access (Aggressive Detection)
+ | Confidence: 100%
+
+[32m[+][0m The external WP-Cron seems to be enabled: https://localhost/wp-cron.php
+ | Found By: Direct Access (Aggressive Detection)
+ | Confidence: 60%
+ | References:
+ |  - https://www.iplocation.net/defend-wordpress-from-ddos
+ |  - https://github.com/wpscanteam/wpscan/issues/1299
+
+[32m[+][0m WordPress version 7.1.5 identified (Latest, released on 2026-11-18).
+ | Found By: Rss Generator (Aggressive Detection)
+ |  - https://localhost/feed/, <generator>https://wordpress.org/?v=7.1.5</generator>
+ |  - https://localhost/comments/feed/, <generator>https://wordpress.org/?v=7.1.5</generator>
+ |  - https://localhost/feed/rss2/, <generator>https://wordpress.org/?v=7.1.5</generator>
+
+[34m[i][0m The main theme could not be detected.
+
+
+[34m[i][0m No plugins Found.
+
+
+[34m[i][0m No themes Found.
+
+
+[34m[i][0m User(s) Identified:
+
+[32m[+][0m joaquin_admin
+ | Found By: Wp Json Api (Aggressive Detection)
+ |  - https://localhost/wp-json/wp/v2/users/?per_page=100&page=1
+ | Confirmed By: Rss Generator (Aggressive Detection)
+
+[33m[!][0m No WPScan API Token given, as a result vulnerability data has not been output.
+[33m[!][0m You can get a free API token with 25 daily requests by registering at https://wpscan.com/register
+
+[32m[+][0m Finished: Sun Nov 22 16:46:57 2026
+[32m[+][0m Requests Done: 711
+[32m[+][0m Cached Requests: 2
+[32m[+][0m Data Sent: 179.348 KB
+[32m[+][0m Data Received: 262.531 KB
+[32m[+][0m Memory used: 273.316 MB
+[32m[+][0m Elapsed time: 00:01:00
