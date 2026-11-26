@@ -8,28 +8,49 @@
 
 ## Introducción
 
+Se desea desplegar el CMS WordPress en una única máquina con una pila LEMP (Nginx, PHP-FPM y MariaDB), su infraestructura usara una Debian 12 desplegada con Vagrant (box debian/bookworm64) + VirtualBox, con nombre lempJoaquinAlejandroAlonsoAdams, sin hacer nada a mano, siendo que todo el despliegue se hará con un ``vagrant up``. Además, la web se servirá por HTTPS, se reforzará su seguridad y se auditará con WPScan. Poseerá puertos mapeados, siendo el 8080 del anfitrión  al 80 de la máquina (guest HTTP) y el 8443 al 443 (guest HTTPS). 
 
-Se desea desplegar el CMS WordPress en una única máquina con una pila LEMP (Nginx, PHP-FPM y MariaDB), igual que en la práctica guiada de clase, pero esta vez sin hacer nada a mano: todo el despliegue se hará con un vagrant up. Además, la web se servirá por HTTPS, se reforzará su seguridad y se auditará con WPScan.  
+El objetivo es disponer de un entorno reproducible, seguro y listo para desarrollo o pruebas, sin intervención manual.
 
-Con respecto a la infraestructura:  
-* Una máquina Debian 12 desplegada con Vagrant (box debian/bookworm64) + VirtualBox, con nombre lempTuNombre. 
-* Puertos mapeados: el 8080 del anfitrión al 80 de la máquina y el 8443 al 443. 
+## Scripts
 
-# Procedimiento
+### `lemp.sh`
+Instala y configura la pila LEMP:
+- **Nginx** como servidor web.
+- **PHP-FPM** con las extensiones necesarias para WordPress (`php-mysql`, `php-curl`, `php-gd`, `php-mbstring`, `php-xml`, etc.).
+- **MariaDB**, configurada para escuchar únicamente en `127.0.0.1`.
+- Crea la base de datos `wordpress` y un usuario con permisos solo sobre ella.
+- Ajusta los límites de subida de PHP y Nginx a **64 MB**.
+- Define un virtual host básico para WordPress en el puerto 80.
 
-Recomendación: Para asegurarte de que los scripts funcionan de forma correcta, recomiendo personalmente, probar los scripts en una maquina virtual y probarlas manualmente antes de usar vagrant.
+### `wordpress.sh`
+Utiliza **WP-CLI** para instalar y configurar WordPress de forma desatendida:
+- Descarga WordPress en español (`--locale=es_ES`).
+- Crea `wp-config.php` con las credenciales de la base de datos.
+- Instala el sitio con el título, usuario administrador (distinto de `admin`) y correo definidos en `.env`.
+- Configura la zona horaria `Europe/Madrid` y enlaces permanentes con `/%postname%/`.
+- Instala y activa el tema **Astra** y los plugins **Wordfence** y **Limit Login Attempts Reloaded**.
+- Crea tres usuarios adicionales con roles de editor, autor y colaborador.
+- Genera una página y dos entradas de ejemplo.
+- Ajusta propietario (`www-data:www-data`) y permisos: carpetas `755`, ficheros `644`, `wp-config.php` `640`.
 
-Los resultados esperados al usar cada script seran los siguientes
+### `https.sh`
+Habilita HTTPS:
+- Genera un **certificado autofirmado** con SAN para `localhost` y `127.0.0.1`.
+- Configura Nginx para escuchar en el puerto 443 con **HTTP/2**.
+- Redirige todo el tráfico HTTP a `https://localhost:8443` (respetando el puerto mapeado).
+- Actualiza las opciones `siteurl` y `home` de WordPress a `https://localhost:8443` y reemplaza cualquier referencia residual a `http://` para evitar contenido mixto.
 
-1. lemp.sh
-
-2. wordpress.sh
-
-3. https.sh
-
-4. security.sh
-
+### `security.sh`
+Aplica el refuerzo de seguridad:
+- Añade `define('DISALLOW_FILE_EDIT', true);` en `wp-config.php` para prohibir la edición de temas y plugins desde el panel.
+- Elimina la meta etiqueta de versión de WordPress y oculta la versión de Nginx (`server_tokens off;`).
+- Elimina `readme.html` y `license.txt`.
+- Configura el plugin **Limit Login Attempts Reloaded** (3 intentos, 20 minutos de bloqueo).
+- Añade cabeceras de seguridad en Nginx (`X-Frame-Options`, `X-Content-Type-Options`, etc.).
+- 
 Tras comprobar que todo funciona, lo organizamos con el siguiente formato, añadiendo el siguiente vagrantfile
+
 
 Despues de eso, nos metemos en consola de comandos (CMD) e indicamos Vagrant up
 
@@ -57,3 +78,14 @@ Para reanudar el proceso, siempre podemos retomar el proceso:
 ```
 vagrant provision
 ```
+
+
+
+
+## Bibliografía
+- Documentación oficial de Vagrant: https://www.vagrantup.com/docs
+- Documentación oficial de Nginx: https://nginx.org/en/docs/
+- Documentación oficial de WP-CLI: https://wp-cli.org/
+- WPScan: https://wpscan.com/
+- Guía de seguridad de WordPress: https://wordpress.org/support/article/hardening-wordpress/
+- Checklist de seguridad para WordPress (UNAM): https://www.seguridad.unam.mx/sites/default/files/checklist_wordpress.pdf
