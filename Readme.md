@@ -1,4 +1,14 @@
-Instalación de CMS en pila LEMP  
+# Instalación de CMS en pila LEMP  
+## Indice
+1. Introducción, explicando qué se va a realizar y sobre qué infraestructura.
+2. Scripts
+3. Auditoría
+4. Problemas Encontrados
+5. Bibliografía
+
+## Introducción
+
+
 Se desea desplegar el CMS WordPress en una única máquina con una pila LEMP (Nginx, PHP-FPM y MariaDB), igual que en la práctica guiada de clase, pero esta vez sin hacer nada a mano: todo el despliegue se hará con un vagrant up. Además, la web se servirá por HTTPS, se reforzará su seguridad y se auditará con WPScan.  
 
 Con respecto a la infraestructura:  
