@@ -208,9 +208,9 @@ nginx -t
 systemctl reload nginx
 ```
 
-- Actualiza las opciones `siteurl` y `home` de WordPress a `https://localhost:8443` y reemplaza cualquier referencia residual a `http://` para evitar contenido mixto.
+- Ejecutar WPScan DESPUÉS del refuerzo
 ```
-
+wpscan --url https://localhost --disable-tls-checks --no-update --enumerate u,vp,vt -o "${OUT_DIR}/wpscan_despues.txt" -f cli || true
 ```
 
 ### `security.sh`
