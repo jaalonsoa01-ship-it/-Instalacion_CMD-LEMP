@@ -1,9 +1,9 @@
 # Instalación de CMS en pila LEMP  
 ## Indice
-1. Introducción, explicando qué se va a realizar y sobre qué infraestructura.
+1. Introducción
 2. Scripts
-3. Auditoría
-4. Problemas Encontrados
+3. Explicación de WPScan
+4. Imagenes y explicación
 5. Bibliografía
 
 ## Introducción
@@ -335,8 +335,9 @@ Para reanudar el proceso, siempre podemos retomar el proceso:
 vagrant provision
 ```
 
+## Análisis de WPScan
 
-
+## Imagenes, screencast y explicación
 
 ## Bibliografía
 - Documentación oficial de Vagrant: https://www.vagrantup.com/docs
